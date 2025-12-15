@@ -1,0 +1,119 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LibrarySystem
+{
+   
+    public abstract class LibraryItem
+    {
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public int Year { get; set; }
+        public bool IsAvailable { get; set; }
+
+        protected LibraryItem(string title, string author, int year, bool isAvailable = true)
+        {
+            Title = title;
+            Author = author;
+            Year = year;
+            IsAvailable = isAvailable;
+        }
+
+       
+        public virtual void DisplayInfo()
+        {
+            Console.WriteLine($"Название: {Title}, Автор: {Author}, Год: {Year}, Доступен: {IsAvailable}");
+        }
+    }
+
+    public class Book : LibraryItem
+    {
+        public int PageCount { get; set; }
+        public string ISBN { get; set; }
+
+        public Book(string title, string author, int year, int pageCount, string isbn, bool isAvailable = true)
+            : base(title, author, year, isAvailable)
+        {
+            PageCount = pageCount;
+            ISBN = isbn;
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
+            Console.WriteLine($"Страниц: {PageCount}, ISBN: {ISBN}");
+        }
+    }
+
+    public class Magazine : LibraryItem
+    {
+        public int IssueNumber { get; set; }
+        public string Frequency { get; set; }  
+
+        public Magazine(string title, string author, int year, int issueNumber, string frequency, bool isAvailable = true)
+            : base(title, author, year, isAvailable)
+        {
+            IssueNumber = issueNumber;
+            Frequency = frequency;
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
+            Console.WriteLine($"Номер выпуска: {IssueNumber}, Периодичность: {Frequency}");
+        }
+    }
+
+    public class DVD : LibraryItem
+    {
+        public TimeSpan Duration { get; set; }
+        public string Rating { get; set; }
+
+        public DVD(string title, string author, int year, TimeSpan duration, string rating, bool isAvailable = true)
+            : base(title, author, year, isAvailable)
+        {
+            Duration = duration;
+            Rating = rating;
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
+            Console.WriteLine($"Продолжительность: {Duration}, Рейтинг: {Rating}");
+        }
+    }
+
+    public class Audiobook : LibraryItem
+    {
+        public TimeSpan Duration { get; set; }
+        public string Narrator { get; set; }
+
+        public Audiobook(string title, string author, int year, TimeSpan duration, string narrator, bool isAvailable = true)
+            : base(title, author, year, isAvailable)
+        {
+            Duration = duration;
+            Narrator = narrator;
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
+            Console.WriteLine($"Длительность: {Duration}, Диктор: {Narrator}");
+        }
+    }
+
+   
+    public class LibraryCatalog
+    {
+        private List<LibraryItem> items = new List<LibraryItem>();
+
+        public void AddItem(LibraryItem item)
+        {
+            items.Add(item);
+        }
+    }
+}
+
+        
