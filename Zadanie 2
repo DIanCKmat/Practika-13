@@ -1,0 +1,143 @@
+public abstract class BankAccount
+    {
+        public string AccountNumber { get; protected set; }
+        public decimal Balance { get; protected set; }
+        public string Owner { get; protected set; }
+
+        public abstract void Deposit(decimal amount);
+        public abstract bool Withdraw(decimal amount);
+
+        public virtual void DisplayAccountInfo()
+        {
+            Console.WriteLine($"Владелец: {Owner}");
+            Console.WriteLine($"Номер счета: {AccountNumber}");
+            Console.WriteLine($"Баланс: {Balance:C}");
+        }
+    }
+
+    public class CheckingAccount : BankAccount
+    {
+        public decimal OverdraftLimit { get; private set; }
+
+        public CheckingAccount(string accountNumber, string owner, decimal overdraftLimit)
+        {
+            AccountNumber = accountNumber;
+            Owner = owner;
+            Balance = 0;
+            OverdraftLimit = overdraftLimit;
+        }
+
+        public override void Deposit(decimal amount)
+        {
+            Balance += amount;
+        }
+
+        public override bool Withdraw(decimal amount)
+        {
+            if (Balance - amount >= -OverdraftLimit)
+            {
+                Balance -= amount;
+                return true;
+            }
+            return false;
+        }
+
+        public override void DisplayAccountInfo()
+        {
+            base.DisplayAccountInfo();
+            Console.WriteLine($"Лимит овердрафта: {OverdraftLimit:C}");
+        }
+    }
+
+    public class SavingsAccount : BankAccount
+    {
+        public decimal InterestRate { get; private set; }
+
+        public SavingsAccount(string accountNumber, string owner, decimal interestRate)
+        {
+            AccountNumber = accountNumber;
+            Owner = owner;
+            Balance = 0;
+            InterestRate = interestRate;
+        }
+
+        public override void Deposit(decimal amount)
+        {
+            Balance += amount;
+        }
+
+        public override bool Withdraw(decimal amount)
+        {
+            if (Balance >= amount)
+            {
+                Balance -= amount;
+                return true;
+            }
+            return false;
+        }
+
+        public override void DisplayAccountInfo()
+        {
+            base.DisplayAccountInfo();
+            Console.WriteLine($"Процентная ставка: {InterestRate}% годовых");
+        }
+    }
+
+    public class CreditAccount : BankAccount
+    {
+        public decimal CreditLimit { get; private set; }
+        public DateTime DueDate { get; private set; }
+
+        public CreditAccount(string accountNumber, string owner, decimal creditLimit, DateTime dueDate)
+        {
+            AccountNumber = accountNumber;
+            Owner = owner;
+            Balance = 0;
+            CreditLimit = creditLimit;
+            DueDate = dueDate;
+        }
+
+        public override void Deposit(decimal amount)
+        {
+            Balance += amount;
+        }
+
+        public override bool Withdraw(decimal amount)
+        {
+            if (Balance + amount <= CreditLimit)
+            {
+                Balance += amount;
+                return true;
+            }
+            return false;
+        }
+
+        public override void DisplayAccountInfo()
+        {
+            base.DisplayAccountInfo();
+            Console.WriteLine($"Кредитный лимит: {CreditLimit:C}");
+            Console.WriteLine($"Срок погашения: {DueDate:dd.MM.yyyy}");
+        }
+    }
+using System.Text;
+
+internal class Program
+{
+   static void Main()
+   {
+     Console.OutputEncoding = Encoding.UTF8;
+     BankAccount[] accounts = {
+     new CheckingAccount("CHK001", "Иван Иванов", 1000),
+     new SavingsAccount("SAV001", "Петр Петров", 5.0m),
+     new CreditAccount("CRD001", "Сергей Сергеев", 50000, DateTime.Now.AddYears(2))
+     };
+
+     foreach (var account in accounts)
+     {
+     account.DisplayAccountInfo();
+     Console.WriteLine("---");
+     }
+   }
+    
+
+}
