@@ -1,0 +1,50 @@
+internal class Employee 
+{ 
+    public string Name { get; set; } 
+    public string Position { get; set; } 
+    public int Salary { get; set; } 
+    public DateTime HireData { get; set; } 
+    public Employee(string name, string position, int salary, DateTime hireData)  
+    {  
+        Name = name; 
+        Position = position; 
+        Salary = salary; 
+        HireData = hireData; 
+    } 
+} 
+class Manager : Employee 
+{ 
+    public int TeamSize { get; set; } 
+    public Manager(string name, string position, int salary, DateTime hireData, int teamSize) : base(name, position, salary, hireData) 
+    { 
+        TeamSize = teamSize; 
+    } 
+    public void Meet() 
+    { 
+        Console.WriteLine("Проводится собрание!"); 
+    } 
+} 
+class Developer : Employee 
+{ 
+    public string ProgramLanguage { get; set; } 
+    public Developer(string name, string position, int salary, DateTime hireData, string language) : base(name, position, salary, hireData) 
+    { 
+        ProgramLanguage = language; 
+    } 
+    public void WriteCode() 
+    { 
+        Console.WriteLine($"Пишу код на {ProgramLanguage}"); 
+    } 
+} 
+class Director : Employee 
+{ 
+    public string Department { get; set; } 
+    public Director(string name, string position, int salary, DateTime hireData, string department) : base(name, position, salary, hireData) 
+    { 
+        Department = department; 
+    } 
+    public void ApproveBudget() 
+    { 
+        Console.WriteLine("Удтверждаю бюджет"); 
+    } 
+}
